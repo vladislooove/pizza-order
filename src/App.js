@@ -4,6 +4,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import axios from 'axios';
 import './App.css';
 
+import { Pizza } from './components/Pizza'
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -115,6 +117,7 @@ class App extends Component {
                         />
                         <button>OK</button>
                     </form>
+                    <Pizza data={this.state.result} />
                 </div>
             </MuiThemeProvider>
         );
