@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "axios": "^0.18.0",
-    "material-ui": "^0.20.0"
+    "material-ui": "^0.20.0",
+    "xml-to-js": "0.0.7"
   }
 }
