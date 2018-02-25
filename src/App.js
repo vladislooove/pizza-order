@@ -5,6 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import LinearProgress from 'material-ui/LinearProgress';
+import Voice from 'material-ui/svg-icons/action/settings-voice';
 
 import axios from 'axios';
 import './App.css';
@@ -14,14 +15,70 @@ import { Pizza } from './components/Pizza'
 class App extends Component {
     constructor(props) {
         super(props);
+
+        let recognition = new window.webkitSpeechRecognition();
+        recognition.continious = true;
+        recognition.onend = this.onEndRecording.bind(this);
+        recognition.onresult = this.onResultRecording.bind(this);
+
         this.state = {
             formData: {
                 input: 'large pan veggie pizza plus pepperoni, heavy garlic, leave out the onions, well done with white sauce half mushrooms and extra olives and half light green peppers and pineapple'
             },
             result: null,
-            isLoading: false
+            isLoading: false,
+            speech: {
+                isRecording: false,
+                recognition: recognition
+            }
         }
     }
+
+    handleVoiceRecording() {
+        if(this.state.speech.isRecording) {
+            this.state.speech.recognition.stop();
+            this.setState({
+                speech: {
+                    isRecording: false,
+                    recognition: this.state.speech.recognition                    
+                }
+            })
+        } else {
+            this.state.speech.recognition.start();
+            this.setState({
+                speech: {
+                    isRecording: true,
+                    recognition: this.state.speech.recognition
+                }
+            })
+        }
+    }
+
+    onEndRecording() {
+        this.setState({
+            speech: {
+                isRecording: false,
+                recognition: this.state.speech.recognition                    
+            }
+        })
+    }
+
+    onResultRecording(event) {
+        let speechInput = '';
+
+        for (var i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+                speechInput += event.results[i][0].transcript;
+            }
+        }
+
+        this.setState({
+            formData: {
+                input: this.state.formData.input + speechInput
+            }
+        })
+    }
+
     onInputChange(event) {
         this.setState({
             formData: {
@@ -126,6 +183,19 @@ class App extends Component {
                     <div className="App">
                         <Paper style={{ marginBottom: '20px' }}>
                             <div className="App__form">
+                                <RaisedButton
+                                    label={this.state.speech.isRecording ? 
+                                        'Click to finish record'
+                                        :
+                                        'Click to start record'}
+                                    labelPosition="after"
+                                    primary={this.state.speech.isRecording ? false : true}
+                                    secondary={this.state.speech.isRecording ? true : false}
+                                    icon={<Voice />}
+                                    fullWidth={true}
+                                    onClick={this.handleVoiceRecording.bind(this)}
+                                />
+
                                 <form onSubmit={this.onFormSubmit.bind(this)}>
                                     <TextField
                                         floatingLabelText="Type your text"
