@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
+
 import TextField from 'material-ui/TextField';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Paper from 'material-ui/Paper';
+import RaisedButton from 'material-ui/RaisedButton';
+import LinearProgress from 'material-ui/LinearProgress';
+
 import axios from 'axios';
 import './App.css';
 
@@ -11,8 +16,10 @@ class App extends Component {
         super(props);
         this.state = {
             formData: {
-                input: ''
-            }
+                input: 'large pan veggie pizza plus pepperoni, heavy garlic, leave out the onions, well done with white sauce half mushrooms and extra olives and half light green peppers and pineapple'
+            },
+            result: null,
+            isLoading: false
         }
     }
     onInputChange(event) {
@@ -20,24 +27,21 @@ class App extends Component {
             formData: {
                 input: event.target.value
             },
-            result: null
         });       
     }
     onFormSubmit(event) {
         event.preventDefault();
+
+        //set loading state to show loader
+        this.setState({ isLoading: true });
         
         const requestBody = new URLSearchParams();
-        requestBody.append('__VIEWSTATE', '/wEPDwUKLTY0NDQ4NzM3MWRkVpqEVmLzI0aPuMy/JfiwS6tZUUeW037finBb/zSyXh4=');
-        requestBody.append('__VIEWSTATEGENERATOR', 'CA0B0334');
-        requestBody.append('__EVENTVALIDATION', '/wEdAATFD1eWdciEcBgOr2YKbFcgSO4IU2ebZhwIX2Zb/sl/53vO3wpLjOSwYMFxhp/fDVwgNLZfd1Be8hw438ja9tfdyu9VwJGxLaTW7MY1gvVOlDq5hNw038U0qL7xNQHJc1E=');
-        requestBody.append('InputText', this.state.formData.input);
-        requestBody.append('OutputText', '');
-        requestBody.append('btnExtract', 'Extract')
+        requestBody.append('text', this.state.formData.input);
 
 
         const request = {
             method: 'POST',
-            url: 'https://api.intouchposenterprise.com:1602/',
+            url: 'https://api.intouchposenterprise.com:1602/Convert.asmx/Xml',
             data: requestBody,
             headers: {
                 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
@@ -50,74 +54,93 @@ class App extends Component {
         
         axios(request)
             .then((response) => {
-                // get embedded xml from html
-                const responseDocument = response.data;
-                const inputResponse = responseDocument.getElementById('OutputText');
-                const xmlLikeResponse = inputResponse.innerText;
+                if(response.data) {
 
-                if(xmlLikeResponse.length) {
+                    //get string with xml content
+                    const xmlLikeResponse = response.data
+                        .querySelector('string')
+                        .textContent;
 
                     //convert xmlLike string to native xml
-                    let xmlResponse = new DOMParser().parseFromString(xmlLikeResponse, 'text/xml');
-                    xmlResponse = xmlResponse.querySelector('Root');
-                    //convert xml response to json
-                    const jsonResponse = xml2json(xmlResponse);
-                    console.log(jsonResponse);
+                    const xmlResponse = new DOMParser().parseFromString(xmlLikeResponse, 'text/xml');
                     
-                    this.setState({result: jsonResponse});
+                    //convert xml response to json
+                    const jsonResponse = xml2json(xmlResponse.querySelector('Root'));
+                    
+                    this.setState({
+                        result: jsonResponse,
+                        isLoading: false
+                    });
                 }
 
                 // function from stackoverflow to parse xml
                 function xml2json(xml) {
                     try {
-                      var obj = {};
-                      if (xml.children.length > 0) {
+                        var obj = {};
+                        if (xml.children.length > 0) {
                         for (var i = 0; i < xml.children.length; i++) {
-                          var item = xml.children.item(i);
-                          var nodeName = item.nodeName;
-                  
-                          if (typeof (obj[nodeName]) == "undefined") {
+                            var item = xml.children.item(i);
+                            var nodeName = item.nodeName;
+                    
+                            if (typeof (obj[nodeName]) == "undefined") {
                             obj[nodeName] = xml2json(item);
-                          } else {
+                            } else {
                             if (typeof (obj[nodeName].push) == "undefined") {
-                              var old = obj[nodeName];
-                  
-                              obj[nodeName] = [];
-                              obj[nodeName].push(old);
+                                var old = obj[nodeName];
+                    
+                                obj[nodeName] = [];
+                                obj[nodeName].push(old);
                             }
                             obj[nodeName].push(xml2json(item));
-                          }
+                            }
                         }
-                      } else {
+                        } else {
                         obj = xml.textContent;
-                      }
-                      return obj;
+                        }
+                        return obj;
                     } catch (e) {
                         console.log(e.message);
                     }
-                  }                  
+                }                                      
             })
             .catch((error) => {
-                console.log(error)
+                console.log(error);
+                this.setState({ isLoading: false })
             })
     }
     render() {
         return (
             <MuiThemeProvider>
-                <div className="App">
-                    <form onSubmit={this.onFormSubmit.bind(this)}>
-                        <TextField
-                            floatingLabelText="Type your text"
-                            multiLine={true}
-                            fullWidth={true}                    
-                            floatingLabelFixed={true}                            
-                            rows={2}
-                            value={this.state.formData.input}
-                            onChange={this.onInputChange.bind(this)}
-                        />
-                        <button>OK</button>
-                    </form>
-                    <Pizza data={this.state.result} />
+                <div>
+                    {/* render progress component if state is loading */}
+                    {this.state.isLoading ? 
+                        <LinearProgress mode="indeterminate" />
+                        : null                    
+                    }
+
+                    <div className="App">
+                        <Paper style={{ marginBottom: '20px' }}>
+                            <div className="App__form">
+                                <form onSubmit={this.onFormSubmit.bind(this)}>
+                                    <TextField
+                                        floatingLabelText="Type your text"
+                                        multiLine={true}
+                                        fullWidth={true}                    
+                                        floatingLabelFixed={true}                            
+                                        rows={2}
+                                        value={this.state.formData.input}
+                                        onChange={this.onInputChange.bind(this)}
+                                    />
+                                    <RaisedButton label="Extract" 
+                                                  primary={true} 
+                                                  fullWidth={true}
+                                                  onClick={this.onFormSubmit.bind(this)}
+                                    />
+                                </form>
+                            </div>                    
+                        </Paper>
+                        {/* <Pizza data={this.state.result} /> */}
+                    </div>
                 </div>
             </MuiThemeProvider>
         );

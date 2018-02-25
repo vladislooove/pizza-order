@@ -1,5 +1,10 @@
 import React from 'react';
 
+const Toppings = (props) => {
+    console.log(props)
+    return null
+} 
+
 export const Pizza = (props) => {
     if(!props.data) {
         return null;
@@ -10,6 +15,9 @@ export const Pizza = (props) => {
                 <img alt="donnes" src={`${process.env.PUBLIC_URL}/images/donnes/${props.data.Donnes}.png`} />
                 <img alt="sauce" src={`${process.env.PUBLIC_URL}/images/sauce/${props.data.Sauce}.png`} />
                 <img alr="speciality" src={`${process.env.PUBLIC_URL}/images/speciality/${props.data.Speciality}.png`} />
+
+                <Toppings data={props.data.Toppings}/>
+
             </div>
         )
     }
