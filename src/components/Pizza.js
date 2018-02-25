@@ -1,7 +1,8 @@
 import React from 'react';
 
 import Paper from 'material-ui/Paper';
-
+import {List, ListItem} from 'material-ui/List';
+import Subheader from 'material-ui/Subheader';
 
 const LeftHalfToppings = (props) => {
     if(props.LeftHalf) {
@@ -73,6 +74,110 @@ const WholeToppings = (props) => {
     }
 }
 
+const ToppingsInfo = (props) => {
+    return (
+        <div>
+            <ToppingsInfoWhole Whole={props.Toppings.Whole} />
+            <ToppingsInfoLeft LeftHalf={props.Toppings.LeftHalf} />
+            <ToppingsInfoRight RightHalf={props.Toppings.RightHalf} />
+        </div>
+    )
+}
+
+const ToppingsInfoLeft = (props) => {
+    if(props.LeftHalf) {
+        if(!props.LeftHalf.Topping.length) {
+            return (
+                <List>
+                    <Subheader>Left half</Subheader>
+                    <ListItem primaryText={props.LeftHalf.Topping.Name.toLowerCase()}>
+                    </ListItem>
+                </List>
+            );
+        } else {
+            const result = props.LeftHalf.Topping.map((topping) => {
+                return (
+                    <ListItem primaryText={topping.Name.toLowerCase()}
+                              key={topping.Id}>
+                    </ListItem>            
+                )
+            });
+            return (
+                <List>
+                    <Subheader>Left half</Subheader>
+                    {result}
+                </List>
+            );
+        }
+    } else {
+        return null;
+    }
+}
+
+const ToppingsInfoRight = (props) => {
+    if(props.RightHalf) {
+        if(!props.RightHalf.Topping.length) {
+            return (
+                <List>
+                    <Subheader>Right half</Subheader>
+                    <ListItem primaryText={props.RightHalf.Topping.Name.toLowerCase()}>
+                    </ListItem>
+                </List>
+            );
+        } else {
+            const result = props.RightHalf.Topping.map((topping) => {
+                return (
+                    <ListItem primaryText={topping.Name.toLowerCase()}
+                              key={topping.Id}>
+                    </ListItem>            
+                )
+            });
+            return (
+                <List>
+                    <Subheader>Right half</Subheader>
+                    {result}
+                </List>
+            );
+        }
+    } else {
+        return null;
+    }
+}
+
+const ToppingsInfoWhole = (props) => {
+    if(props.Whole) {
+        if(props.Whole.Topping) {
+            if(!props.Whole.Topping.length) {
+                return(
+                    <List>
+                        <Subheader>Whole</Subheader>
+                        <ListItem primaryText={props.Whole.Topping.Name.toLowerCase()}>
+                        </ListItem>
+                    </List>
+                )
+            } else {
+                const result = props.Whole.Topping.map((topping) => {
+                    return (
+                        <ListItem primaryText={topping.Name.toLowerCase()}
+                                  key={topping.Id}>
+                        </ListItem>            
+                    )
+                });
+                return (
+                    <List>
+                        <Subheader>Whole</Subheader>
+                        {result}
+                    </List>
+                );
+            }
+        } else {
+            return null;
+        }
+    } else {
+        return null;
+    }
+}
+
 export const Pizza = (props) => {
     if(!props.data) {
         return null;
@@ -83,14 +188,16 @@ export const Pizza = (props) => {
         }
         return (
             <div className="pizza">
-                <Paper className="pizza__wrapper">
+                <div className="pizza__wrapper">
                     <div className="pizza__media">
                         <img alt="crust" src={`${process.env.PUBLIC_URL}/images/crust/${props.data.Crust.toLowerCase()}.png`} />
                         <LeftHalfToppings LeftHalf={props.data.Toppings.LeftHalf} />
                         <RightHalfToppings RightHalf={props.data.Toppings.RightHalf} />
                         <WholeToppings Whole={props.data.Toppings.Whole} />
                     </div>
-                </Paper>
+                </div>
+                <hr />
+                <ToppingsInfo Toppings={props.data.Toppings}/>
             </div>
         )
     }

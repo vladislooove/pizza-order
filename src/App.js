@@ -237,9 +237,7 @@ class App extends Component {
                                                   disabled={this.state.formData.input.length ? false : true}
                                     />
                                 </form>
-                            </div>                    
-                        </Paper>
-                        <Paper style={{ marginBottom: '20px' }}>
+                            </div>                
                             <Pizza data={this.state.result} />
                         </Paper>
                     </div>
