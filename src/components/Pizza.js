@@ -30,7 +30,7 @@ const RightHalfToppings = (props) => {
         if(!props.RightHalf.Topping.length) {
             return <img alt="topping"
                         key={props.RightHalf.Topping.Id}
-                        src={`${process.env.PUBLIC_URL}/images/toppings/right-half/${props.RightHalf.Topping.Id.Name}/${props.RightHalf.Topping.Id.Attribute}.png`} />                
+                        src={`${process.env.PUBLIC_URL}/images/toppings/right-half/${props.RightHalf.Topping.Name}/${props.RightHalf.Topping.Attribute}.png`} />                
 
         } else {
             const result = props.RightHalf.Topping.map((topping) => {
@@ -49,9 +49,21 @@ const RightHalfToppings = (props) => {
 
 const WholeToppings = (props) => {
     if(props.Whole) {
-        console.log(props.Whole);
-        return null;
-        
+        if(!props.Whole.Topping.length) {
+            return <img alt="topping"
+                        key={props.Whole.Topping.Id}
+                        src={`${process.env.PUBLIC_URL}/images/toppings/whole/${props.Whole.Topping.Name}/${props.Whole.Topping.Attribute}.png`} />                
+
+        } else {
+            const result = props.Whole.Topping.map((topping) => {
+                return (
+                    <img alt="topping" 
+                         key={topping.Id}
+                         src={`${process.env.PUBLIC_URL}/images/toppings/whole/${topping.Name}/${topping.Attribute}.png`} />                
+                )
+            });
+            return result;
+        }
     } else {
         return null;
     }
@@ -67,13 +79,13 @@ export const Pizza = (props) => {
         }
         return (
             <div className="pizza">
-                <Paper style={{ width: '170px', margin: '0 auto' }}>
+                <Paper style={{ width: '300px', margin: '0 auto', padding: '15px' }}>
                     <div className="pizza__media">
                         <img alt="crust" src={`${process.env.PUBLIC_URL}/images/crust/${props.data.Crust}.png`} />
                         <LeftHalfToppings LeftHalf={props.data.Toppings.LeftHalf} />
                         <RightHalfToppings RightHalf={props.data.Toppings.RightHalf} />
                         <WholeToppings Whole={props.data.Toppings.Whole} />
-                                    </div>
+                    </div>
                 </Paper>
             </div>
         )
