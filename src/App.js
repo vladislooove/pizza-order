@@ -76,7 +76,9 @@ class App extends Component {
             formData: {
                 input: this.state.formData.input + speechInput
             }
-        })
+        });
+
+        this.onFormSubmit(event);
     }
 
     onInputChange(event) {
