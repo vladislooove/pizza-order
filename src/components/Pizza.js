@@ -49,20 +49,24 @@ const RightHalfToppings = (props) => {
 
 const WholeToppings = (props) => {
     if(props.Whole) {
-        if(!props.Whole.Topping.length) {
-            return <img alt="topping"
-                        key={props.Whole.Topping.Id}
-                        src={`${process.env.PUBLIC_URL}/images/toppings/whole/${props.Whole.Topping.Name}/${props.Whole.Topping.Attribute}.png`} />                
+        if(props.Whole.Topping) {
+            if(!props.Whole.Topping.length) {
+                return <img alt="topping"
+                            key={props.Whole.Topping.Id}
+                            src={`${process.env.PUBLIC_URL}/images/toppings/whole/${props.Whole.Topping.Name}/${props.Whole.Topping.Attribute}.png`} />                
 
+            } else {
+                const result = props.Whole.Topping.map((topping) => {
+                    return (
+                        <img alt="topping" 
+                            key={topping.Id}
+                            src={`${process.env.PUBLIC_URL}/images/toppings/whole/${topping.Name}/${topping.Attribute}.png`} />                
+                    )
+                });
+                return result;
+            }
         } else {
-            const result = props.Whole.Topping.map((topping) => {
-                return (
-                    <img alt="topping" 
-                         key={topping.Id}
-                         src={`${process.env.PUBLIC_URL}/images/toppings/whole/${topping.Name}/${topping.Attribute}.png`} />                
-                )
-            });
-            return result;
+            return null;
         }
     } else {
         return null;
@@ -79,7 +83,7 @@ export const Pizza = (props) => {
         }
         return (
             <div className="pizza">
-                <Paper style={{ width: '300px', margin: '0 auto', padding: '15px' }}>
+                <Paper className="pizza__wrapper">
                     <div className="pizza__media">
                         <img alt="crust" src={`${process.env.PUBLIC_URL}/images/crust/${props.data.Crust}.png`} />
                         <LeftHalfToppings LeftHalf={props.data.Toppings.LeftHalf} />

@@ -15,6 +15,17 @@
 .pizza{
     padding: 20px;
 }
+.pizza__wrapper{
+    width: 300px;
+    margin: 0 auto; 
+    padding: 15px
+}
+
+@media screen and (max-width: 400px) {
+    .pizza__wrapper{
+        width: 100%;
+    }
+}
 .pizza__media{
     position: relative;
     margin: 0 auto;
