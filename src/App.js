@@ -38,7 +38,7 @@ class App extends Component {
         const requestBody = new URLSearchParams();
         requestBody.append('text', this.state.formData.input);
 
-
+        //configure axios request
         const request = {
             method: 'POST',
             url: 'https://api.intouchposenterprise.com:1602/Convert.asmx/Xml',
@@ -69,7 +69,10 @@ class App extends Component {
                     
                     this.setState({
                         result: jsonResponse,
-                        isLoading: false
+                        isLoading: false,
+                        formData: {
+                            input: ''
+                        }
                     });
                 }
 
@@ -114,7 +117,9 @@ class App extends Component {
                 <div>
                     {/* render progress component if state is loading */}
                     {this.state.isLoading ? 
-                        <LinearProgress mode="indeterminate" />
+                        <LinearProgress mode="indeterminate"
+                                        style={{ position: 'fixed', top: 0, right: 0, left: 0, zIndex: 1000 }}
+                        />
                         : null                    
                     }
 
@@ -135,11 +140,14 @@ class App extends Component {
                                                   primary={true} 
                                                   fullWidth={true}
                                                   onClick={this.onFormSubmit.bind(this)}
+                                                  disabled={this.state.formData.input.length ? false : true}
                                     />
                                 </form>
                             </div>                    
                         </Paper>
-                        {/* <Pizza data={this.state.result} /> */}
+                        <Paper style={{ marginBottom: '20px' }}>
+                            <Pizza data={this.state.result} />
+                        </Paper>
                     </div>
                 </div>
             </MuiThemeProvider>

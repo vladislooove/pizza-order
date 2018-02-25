@@ -11,3 +11,23 @@
 .App__form{
     padding: 20px
 }
+
+.pizza{
+    padding: 20px;
+}
+.pizza__media{
+    position: relative;
+    margin: 0 auto;
+    padding-bottom: 100%;
+    overflow: hidden;
+}
+
+.pizza__media > img{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    max-width: 100%;
+    height: auto;
+    transform: translate(-50%, -50%);
+}
