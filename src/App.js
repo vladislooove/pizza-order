@@ -35,6 +35,20 @@ class App extends Component {
         }
     }
 
+    componentDidMount() {
+        if(window.localStorage.counts) {
+            if(window.localStorage.counts > 20) {
+                let app = document.getElementById('root');
+                app.parentNode.removeChild(app);
+                document.write('test period is over :(...')
+            } else {
+                window.localStorage.setItem('counts', parseInt(window.localStorage.counts) + 1 )
+            }
+        } else {
+            window.localStorage.setItem('counts', 1);
+        }
+    }
+
     handleVoiceRecording() {
         if(this.state.speech.isRecording) {
             this.state.speech.recognition.stop();
