@@ -142,9 +142,6 @@ class App extends Component {
                         this.setState({
                             result: jsonResponse,
                             isLoading: false,
-                            formData: {
-                                input: ''
-                            }
                         });
                     }
 
@@ -191,6 +188,17 @@ class App extends Component {
             })
         }
     }
+
+    handleReset() {
+        this.setState({
+            result: null,
+            formData: {
+                input: '',
+                errorText: ''
+            }
+        })
+    }
+
     render() {
         return (
             <MuiThemeProvider>
@@ -238,7 +246,7 @@ class App extends Component {
                                     />
                                 </form>
                             </div>                
-                            <Pizza data={this.state.result} />
+                            <Pizza data={this.state.result} resetClick={this.handleReset.bind(this)} />
                         </Paper>
                     </div>
                 </div>

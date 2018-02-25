@@ -13,6 +13,7 @@
 }
 
 .pizza{
+    position: relative;
     padding: 20px;
 }
 .pizza__wrapper{
@@ -31,6 +32,13 @@
     margin: 0 auto;
     padding-bottom: 100%;
     overflow: hidden;
+}
+
+.pizza__remove-btn{
+    position: absolute;
+    top: 0;
+    right: 20px;
+    z-index: 10;
 }
 
 .pizza__media > img{
