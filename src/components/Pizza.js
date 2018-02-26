@@ -16,9 +16,9 @@ export const Pizza = (props) => {
     if(!props.data) {
         return null;
     } else {
+
         if(!props.data.Size) {
             props.data.Size = 'Medium';
-            console.log(props)
         }
         return (
             <div className="pizza">
