@@ -5,6 +5,13 @@ import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Clear from 'material-ui/svg-icons/content/clear';
+import {
+    Table,
+    TableBody,
+    TableRow,
+    TableRowColumn,
+  } from 'material-ui/Table';
+  
 
 const LeftHalfToppings = (props) => {
     if(props.LeftHalf) {
@@ -180,6 +187,47 @@ const ToppingsInfoWhole = (props) => {
     }
 }
 
+const Pizzainfo = (props) => {
+    return (
+        <Table>
+            <TableBody displayRowCheckbox={false}>
+                <TableRow>
+                    <TableRowColumn>
+                        Crust
+                    </TableRowColumn>
+                    <TableRowColumn style={{textAlign: 'right'}}>
+                        {props.data.Crust}
+                    </TableRowColumn>
+                </TableRow>
+                <TableRow>
+                    <TableRowColumn>
+                        Size
+                    </TableRowColumn>
+                    <TableRowColumn style={{textAlign: 'right'}}>
+                        {props.data.Size}
+                    </TableRowColumn>
+                </TableRow>
+                <TableRow>
+                    <TableRowColumn>
+                        Doness
+                    </TableRowColumn>
+                    <TableRowColumn style={{textAlign: 'right'}}>
+                        {props.data.Doness}
+                    </TableRowColumn>
+                </TableRow>
+                <TableRow>
+                    <TableRowColumn>
+                        Sauce
+                    </TableRowColumn>
+                    <TableRowColumn style={{textAlign: 'right'}}>
+                        {props.data.Sauce}
+                    </TableRowColumn>
+                </TableRow>
+            </TableBody>
+        </Table>
+    )
+}
+
 export const Pizza = (props) => {
     if(!props.data) {
         return null;
@@ -205,6 +253,7 @@ export const Pizza = (props) => {
                     </div>
                 </div>
                 <hr />
+                <Pizzainfo data={props.data} />
                 <ToppingsInfo Toppings={props.data.Toppings}/>
             </div>
         )
