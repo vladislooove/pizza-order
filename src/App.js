@@ -16,10 +16,17 @@ class App extends Component {
     constructor(props) {
         super(props);
 
-        let recognition = new window.webkitSpeechRecognition();
-        recognition.continious = true;
-        recognition.onend = this.onEndRecording.bind(this);
-        recognition.onresult = this.onResultRecording.bind(this);
+        let recognition;
+        
+        // fallback if browser not supports speech recognition to avoid react construcotr crash
+        if(window.webkitSpeechRecognition) {
+            recognition = new window.webkitSpeechRecognition();
+            recognition.continious = true;
+            recognition.onend = this.onEndRecording.bind(this);
+            recognition.onresult = this.onResultRecording.bind(this);
+        } else {
+            recognition = null;
+        }
 
         this.state = {
             formData: {
@@ -50,22 +57,24 @@ class App extends Component {
     // }
 
     handleVoiceRecording() {
-        if(this.state.speech.isRecording) {
-            this.state.speech.recognition.stop();
-            this.setState({
-                speech: {
-                    isRecording: false,
-                    recognition: this.state.speech.recognition                    
-                }
-            })
-        } else {
-            this.state.speech.recognition.start();
-            this.setState({
-                speech: {
-                    isRecording: true,
-                    recognition: this.state.speech.recognition
-                }
-            })
+        if(this.state.speech.recognition) {
+            if(this.state.speech.isRecording) {
+                this.state.speech.recognition.stop();
+                this.setState({
+                    speech: {
+                        isRecording: false,
+                        recognition: this.state.speech.recognition                    
+                    }
+                })
+            } else {
+                this.state.speech.recognition.start();
+                this.setState({
+                    speech: {
+                        isRecording: true,
+                        recognition: this.state.speech.recognition
+                    }
+                })
+            }
         }
     }
 
