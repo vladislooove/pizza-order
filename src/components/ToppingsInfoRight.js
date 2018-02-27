@@ -1,31 +1,65 @@
 import React from 'react';
 
-import {List, ListItem} from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
+import {
+    Table,
+    TableBody,
+    TableRow,
+    TableRowColumn,
+  } from 'material-ui/Table';
 
 export const ToppingsInfoRight = (props) => {
     if(props.RightHalf) {
         if(!props.RightHalf.Topping.length) {
             return (
-                <List>
-                    <Subheader>Right half</Subheader>
-                    <ListItem primaryText={props.RightHalf.Topping.Name.toLowerCase()}>
-                    </ListItem>
-                </List>
+                <Table>
+                    <TableBody displayRowCheckbox={false}>
+                        <TableRow style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+                            <TableRowColumn>
+                                Right Half
+                            </TableRowColumn>
+                            <TableRowColumn style={{textAlign: 'right'}}>
+                                Attribute
+                            </TableRowColumn>
+                        </TableRow>
+                        <TableRow>
+                            <TableRowColumn>
+                                {props.RightHalf.Topping.Name.toLowerCase()}
+                            </TableRowColumn>
+                            <TableRowColumn style={{textAlign: 'right'}}>
+                                {props.RightHalf.Topping.Attribute.toLowerCase()}
+                            </TableRowColumn>
+                        </TableRow>
+                    </TableBody>
+                </Table>
             );
         } else {
             const result = props.RightHalf.Topping.map((topping) => {
                 return (
-                    <ListItem primaryText={topping.Name.toLowerCase()}
-                              key={topping.Id}>
-                    </ListItem>            
+                    <TableRow key={topping.Id}>
+                        <TableRowColumn>
+                            {topping.Name.toLowerCase()}
+                        </TableRowColumn>
+                        <TableRowColumn style={{textAlign: 'right'}}>
+                            {topping.Attribute.toLowerCase()}
+                        </TableRowColumn>
+                    </TableRow>
                 )
             });
             return (
-                <List>
-                    <Subheader>Right half</Subheader>
-                    {result}
-                </List>
+                <Table>
+                    <TableBody displayRowCheckbox={false}>
+                        <TableRow style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+                            <TableRowColumn>
+                                Right Half
+                            </TableRowColumn>
+                            <TableRowColumn style={{textAlign: 'right'}}>
+                                Attribute
+                            </TableRowColumn>
+                        </TableRow>
+                        {result}
+                    </TableBody>
+                </Table>
+
             );
         }
     } else {

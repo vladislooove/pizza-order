@@ -30,7 +30,7 @@ export const Pizza = (props) => {
 
                 <div className="pizza__wrapper">
                     <div className="pizza__media">
-                        <img alt="crust" src={`${process.env.PUBLIC_URL}/images/crust/${props.data.Crust.toLowerCase()}.png`} />
+                        <img alt="crust" className="crust" src={`${process.env.PUBLIC_URL}/images/crust/${props.data.Crust.toLowerCase()}.png`} />
                         <LeftHalfToppings LeftHalf={props.data.Toppings.LeftHalf} />
                         <RightHalfToppings RightHalf={props.data.Toppings.RightHalf} />
                         <WholeToppings Whole={props.data.Toppings.Whole} />

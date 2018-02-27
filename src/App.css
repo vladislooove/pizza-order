@@ -45,8 +45,19 @@
     position: absolute;
     top: 50%;
     left: 50%;
+    z-index: 5;
     display: block;
     max-width: 100%;
     height: auto;
     transform: translate(-50%, -50%);
+}
+
+.pizza__media > .crust {
+    z-index: 0;
+}
+.pizza__media > .pepperoni {
+    z-index: 1;
+}
+.pizza__media > .cheese {
+    z-index: 0
 }
