@@ -5,7 +5,7 @@ export const RightHalfToppings = (props) => {
         if(!props.RightHalf.Topping.length) {
             return <img alt="topping"
                         key={props.RightHalf.Topping.Id}
-                        className={props.RightHalf.Topping.toLowerCase()}                        
+                        className={props.RightHalf.Topping.Name.toLowerCase()}                        
                         src={`${process.env.PUBLIC_URL}/images/toppings/right-half/${props.RightHalf.Topping.Name.toLowerCase()}/${props.RightHalf.Topping.Attribute.toLowerCase()}.png`} />                
 
         } else {
